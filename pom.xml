@@ -17,6 +17,7 @@
         <log.version>2.14.1</log.version>
     </properties>
 
+
 <dependencies>
     <dependency>
         <groupId>org.projectlombok</groupId>
