@@ -17,4 +17,6 @@ public interface IAutotrainService {
     int getX1();
     int getX2();
     int getX3();
+    boolean isTruckEmpty();
+    boolean isTrailerEmpty();
 }

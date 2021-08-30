@@ -43,56 +43,93 @@ public class AutotrainServiceImpl implements IAutotrainService {
 
     @Override
     public void setX1(int x1) {
-autotrain.setEmptyX1(x1);
+        autotrain.setEmptyX1(x1);
     }
 
     @Override
     public void setX2(int x2) {
-autotrain.setEmptyX2(x2);
+        autotrain.setEmptyX2(x2);
     }
 
     @Override
     public void setX3(int x3) {
-autotrain.setEmptyX3(x3);
+        autotrain.setEmptyX3(x3);
     }
 
     @Override
     public int getX1() {
         int loadX1 = 0;
-        if (!isOverrideLoads()) {
-            if (isTruckEmpty()) {
-                loadX1 = 0;
-            } else {
+        if (isOverrideLoads()) {
+            loadX1 = autotrain.getEmptyX1();
+        } else {
+            if (!isTruckEmpty()) {
                 Truck truck = autotrain.getTruck();
-                Trailer trailer = autotrain.getTrailer();
-                loadX1 = autotrain.getTruck().getMassX1();
+                loadX1 = truck.getMassX1();
                 if (!isTrailerEmpty()) {
-                    loadX1 += Math.round((trailer.getMassSedlo() * truck.getDistSedlo()) / truck.getDistOsi());
+                    Trailer trailer = autotrain.getTrailer();
+                    loadX1 += (trailer.getMassSedlo() * truck.getDistSedlo()) / truck.getDistOsi();
                 }
             }
-        } else {
-            loadX1 = autotrain.getEmptyX1();
         }
-        log.info("AutoTrain loadX1: " + loadX1);
         return loadX1;
     }
 
     @Override
     public int getX2() {
         int loadX2 = 0;
-        return 0;
+        if (isOverrideLoads()) {
+            loadX2 = autotrain.getEmptyX2();
+        } else {
+            if (!isTruckEmpty()) {
+                Truck truck = autotrain.getTruck();
+                loadX2 = truck.getMassX2();
+                if (!isTrailerEmpty()) {
+                    Trailer trailer = autotrain.getTrailer();
+                    loadX2 += (trailer.getMassSedlo() * (truck.getDistOsi() - truck.getDistSedlo())) / truck.getDistOsi();
+                }
+            }
+        }
+
+        return loadX2;
     }
 
     @Override
     public int getX3() {
-        return 0;
+        int loadX3 = 0;
+        if (isOverrideLoads()) {
+            loadX3 = autotrain.getEmptyX3();
+        } else {
+            if (!isTrailerEmpty()) {
+                loadX3 = autotrain.getTrailer().getMassTel();
+            }
+        }
+        return loadX3;
     }
 
-    private boolean isTruckEmpty() {
-        return "".equals(autotrain.getTruck().getName()) || autotrain.getTruck().getName() == null;
+    @Override
+    public boolean isTruckEmpty() {
+        Truck truck = autotrain.getTruck();
+        return truck.getName().isEmpty()
+                || truck.getMass0() <= 0
+                || truck.getMassX1() <= 0
+                || truck.getMassX2() <= 0
+                || truck.getDistOsi() <= 0
+                || truck.getDistSedlo() <= 0
+                ;
     }
 
-    private boolean isTrailerEmpty() {
-        return "".equals(autotrain.getTrailer().getName()) || autotrain.getTrailer().getName() == null;
+    @Override
+    public boolean isTrailerEmpty() {
+        Trailer trailer = autotrain.getTrailer();
+        return trailer.getName().isEmpty()
+                || trailer.getMass0() <= 0
+                || trailer.getMassSedlo() <= 0
+                || trailer.getMassTel() <= 0
+                || trailer.getDistBort() <= 0
+                || trailer.getDistOsi() <= 0
+                || trailer.getDistL() <= 0
+                || trailer.getDistW() <= 0
+                || trailer.getDistH() <= 0
+                ;
     }
 }

@@ -12,9 +12,9 @@ import lombok.*;
 @ToString
 public class Truck implements Serializable {
     private String name = "";
-    private int mass0,
-            massX1,
-            massX2,
-            distOsi,
-            distSedlo;
+    private int mass0 = -1,
+            massX1 = -1,
+            massX2 = -1,
+            distOsi = -1,
+            distSedlo = -1;
 }
