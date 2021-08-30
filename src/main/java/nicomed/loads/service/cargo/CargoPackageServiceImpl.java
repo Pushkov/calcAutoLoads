@@ -23,7 +23,9 @@ public class CargoPackageServiceImpl implements ICargoPackageService {
     public CargoUnit getCargoUnit(CargoUnit unit) {
         if (pack.contains(unit)) {
             int index = pack.indexOf(unit);
-            return pack.get(index);
+            CargoUnit result = pack.get(index);
+            pack.remove(index);
+            return result;
         }
         return null;
     }
@@ -35,10 +37,7 @@ public class CargoPackageServiceImpl implements ICargoPackageService {
 
     @Override
     public void addCargoUnit(CargoUnit unit) {
-        int index = pack.size();
-        unit.setIndex(index);
         pack.add(unit);
-
     }
 
     @Override
@@ -48,11 +47,6 @@ public class CargoPackageServiceImpl implements ICargoPackageService {
 
     @Override
     public void saveCargoUnit(CargoUnit unit) {
-        int index = unit.getIndex();
-        if (index >= 0 && index < pack.size()) {
-            pack.set(index, unit);
-        } else {
-            addCargoUnit(unit);
-        }
+        addCargoUnit(unit);
     }
 }

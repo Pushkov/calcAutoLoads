@@ -15,11 +15,12 @@ import nicomed.loads.service.transport.IAutotrainService;
 
 public class Main {
     private static ICargoPackageService cargoPackageService;
+    private static ICalculations calculations;
 
     public static void main(String[] args) {
         cargoPackageService = new CargoPackageServiceImpl();
+        calculations = new CalculationsManager();
 
-        {
             System.out.println("\nТРАНСПОРТ:");
             Transport transport = initTransport();
             System.out.println(transport);
@@ -27,11 +28,9 @@ public class Main {
             System.out.println("итоговая x1 - " + service.getX1());
             System.out.println("итоговая x2 - " + service.getX2());
             System.out.println("итоговая x3 - " + service.getX3());
-        }
-        {
             System.out.println("\nГРУЗ:");
             CargoBox box = initCargo();
-            System.out.println(box);
+//            System.out.println(box);
             CargoUnit unit = CargoUnit.builder()
                     .unit(
                             CargoBox.builder().name("box1").build()
@@ -44,18 +43,18 @@ public class Main {
                     )
                     .qty(6)
                     .build();
-            System.out.println(unit);
+//            System.out.println(unit);
             cargoPackageService.addCargoUnit(unit);
             cargoPackageService.addCargoUnit(unit1);
             System.out.println(cargoPackageService.getPackage());
             System.out.println("****************");
             CargoUnit edited = cargoPackageService.getCargoUnit(unit);
             edited.getUnit().setName("edit1");
-            edited.setIndex(1);
             cargoPackageService.saveCargoUnit(edited);
             System.out.println(cargoPackageService.getPackage());
 
-        }
+            calculations.getVariantsList(cargoPackageService.getPackage(),transport, null);
+
     }
 
     private static CargoBox initCargo() {
