@@ -52,7 +52,7 @@ public class Main {
             edited.getUnit().setName("edit1");
             cargoPackageService.saveCargoUnit(edited);
             System.out.println(cargoPackageService.getPackage());
-
+        System.out.println("****************");
             calculations.getVariantsList(cargoPackageService.getPackage(),transport, null);
 
     }
