@@ -21,14 +21,14 @@ public class Main {
         cargoPackageService = new CargoPackageServiceImpl();
         calculations = new CalculationsManager();
 
-            System.out.println("\nТРАНСПОРТ:");
+//            System.out.println("\nТРАНСПОРТ:");
             Transport transport = initTransport();
-            System.out.println(transport);
+//            System.out.println(transport);
             IAutotrainService service = new AutotrainServiceImpl((Autotrain) transport);
-            System.out.println("итоговая x1 - " + service.getX1());
-            System.out.println("итоговая x2 - " + service.getX2());
-            System.out.println("итоговая x3 - " + service.getX3());
-            System.out.println("\nГРУЗ:");
+//            System.out.println("итоговая x1 - " + service.getX1());
+//            System.out.println("итоговая x2 - " + service.getX2());
+//            System.out.println("итоговая x3 - " + service.getX3());
+//            System.out.println("\nГРУЗ:");
             CargoBox box = initCargo();
 //            System.out.println(box);
             CargoUnit unit = CargoUnit.builder()
@@ -46,12 +46,12 @@ public class Main {
 //            System.out.println(unit);
             cargoPackageService.addCargoUnit(unit);
             cargoPackageService.addCargoUnit(unit1);
-            System.out.println(cargoPackageService.getPackage());
-            System.out.println("****************");
+//            System.out.println(cargoPackageService.getPackage());
+//            System.out.println("****************");
             CargoUnit edited = cargoPackageService.getCargoUnit(unit);
             edited.getUnit().setName("edit1");
             cargoPackageService.saveCargoUnit(edited);
-            System.out.println(cargoPackageService.getPackage());
+//            System.out.println(cargoPackageService.getPackage());
         System.out.println("****************");
             calculations.getVariantsList(cargoPackageService.getPackage(),transport, null);
 
